@@ -11,7 +11,7 @@ data on NEOs and close approaches extracted by `extract.load_neos` and
 
 You'll edit this file in Tasks 2 and 3.
 """
-
+from models import NearEarthObject
 
 class NEODatabase:
     """A database of near-Earth objects and their close approaches.
@@ -43,8 +43,18 @@ class NEODatabase:
         self._approaches = approaches
 
         # TODO: What additional auxiliary data structures will be useful?
-
+        self._neo_by_name = {}
+        self._neo_by_pdes = {}
         # TODO: Link together the NEOs and their close approaches.
+        for neo in self._neos:
+            self._neo_by_pdes[neo.designation] = neo
+            if neo.name:
+                self._neo_by_pdes[neo.name] = neo
+
+        for approach in self._approaches:
+            neo = self._neo_by_pdes[approach._designation]
+            approach.neo = neo
+            neo.approaches.append(approach)
 
     def get_neo_by_designation(self, designation):
         """Find and return an NEO by its primary designation.
@@ -60,7 +70,10 @@ class NEODatabase:
         :return: The `NearEarthObject` with the desired primary designation, or `None`.
         """
         # TODO: Fetch an NEO by its primary designation.
-        return None
+        if designation in self._neo_by_pdes.keys():
+            return  self._neo_by_pdes[designation]
+        else:
+            return None
 
     def get_neo_by_name(self, name):
         """Find and return an NEO by its name.
@@ -77,7 +90,10 @@ class NEODatabase:
         :return: The `NearEarthObject` with the desired name, or `None`.
         """
         # TODO: Fetch an NEO by its name.
-        return None
+        if name in self._neo_by_name.keys():
+            return self._neo_by_name[name]
+        else:
+            return None
 
     def query(self, filters=()):
         """Query close approaches to generate those that match a collection of filters.
@@ -95,4 +111,10 @@ class NEODatabase:
         """
         # TODO: Generate `CloseApproach` objects that match all of the filters.
         for approach in self._approaches:
-            yield approach
+            if filters:
+                for approach in self._approaches:
+                    if all(map(lambda f: f(approach), filters)):
+                        yield approach
+                    else:
+                        for approach in self._approaches:
+                            yield approach

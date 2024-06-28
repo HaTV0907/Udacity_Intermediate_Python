@@ -16,7 +16,7 @@ import csv
 import json
 
 from models import NearEarthObject, CloseApproach
-
+from helpers import cd_to_datetime
 
 def load_neos(neo_csv_path):
     """Read near-Earth object information from a CSV file.
@@ -24,15 +24,38 @@ def load_neos(neo_csv_path):
     :param neo_csv_path: A path to a CSV file containing data about near-Earth objects.
     :return: A collection of `NearEarthObject`s.
     """
-    # TODO: Load NEO data from the given CSV file.
-    return ()
-
+    NearEarthObjectList = []
+    with open(neo_csv_path, 'r') as infile:
+        reader = csv.DictReader(infile)
+        for row in reader:
+            designation = row['pdes']
+            name = row['name'] if row['name'] else None
+            try:
+                diameter = float(row['diameter'])
+            except ValueError:
+                diameter = float('nan')
+            hazardous = row['pha'] == 'Y'
+            neo = NearEarthObject(designation, name, diameter, hazardous)
+            NearEarthObjectList.append(neo)
+    return NearEarthObjectList
 
 def load_approaches(cad_json_path):
-    """Read close approach data from a JSON file.
+    """Read close approach data from a JSON fi;
 
     :param cad_json_path: A path to a JSON file containing data about close approaches.
     :return: A collection of `CloseApproach`es.
     """
+    CloseApproachList = []
     # TODO: Load close approach data from the given JSON file.
-    return ()
+    with open(cad_json_path, "r") as cad_file:
+        reader = json.load(cad_file)
+        data_list = reader["data"]
+        for data in data_list:
+            designation = data[0]
+            time = cd_to_datetime(data[3])
+            distance = float(data[4])
+            velocity = float(data[7])
+            cad = CloseApproach(designation, time, distance, velocity)
+            CloseApproachList.append(cad)
+    return CloseApproachList
+        
