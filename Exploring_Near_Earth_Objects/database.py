@@ -49,7 +49,7 @@ class NEODatabase:
         for neo in self._neos:
             self._neo_by_pdes[neo.designation] = neo
             if neo.name:
-                self._neo_by_pdes[neo.name] = neo
+                self._neo_by_name[neo.name] = neo
 
         for approach in self._approaches:
             neo = self._neo_by_pdes[approach._designation]
