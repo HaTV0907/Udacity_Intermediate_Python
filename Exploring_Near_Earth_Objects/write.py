@@ -24,12 +24,24 @@ def write_to_csv(results, filename):
     :param results: An iterable of `CloseApproach` objects.
     :param filename: A Path-like object pointing to where the data should be saved.
     """
-    fieldnames = (
-        'datetime_utc', 'distance_au', 'velocity_km_s',
-        'designation', 'name', 'diameter_km', 'potentially_hazardous'
-    )
-    # TODO: Write the results to a CSV file, following the specification in the instructions.
+    fieldnames = ('datetime_utc', 'distance_au', 'velocity_km_s', 'designation', 'name', 'diameter_km', 'potentially_hazardous')
+    with open(filename, "w", newline="") as csvFile:
+        writer = csv.DictWriter(csvFile, fieldnames=fieldnames)
+        writer.writeheader()
+        for result in results:
+            # Merge the dictionaries using the dictionary unpacking operator
+            row = {**result.serialize(), **result.neo.serialize()}
+            if row["name"] is not None:
+                row["name"] = row["name"]
+            else:
+                row["name"] = ""
+            
+            if row["potentially_hazardous"]:
+                row["potentially_hazardous"] = "True"
+            else:
+                row["potentially_hazardous"] = "False"
 
+            writer.writerow(row)
 
 def write_to_json(results, filename):
     """Write an iterable of `CloseApproach` objects to a JSON file.
@@ -43,3 +55,33 @@ def write_to_json(results, filename):
     :param filename: A Path-like object pointing to where the data should be saved.
     """
     # TODO: Write the results to a JSON file, following the specification in the instructions.
+    data = list()
+    for result in results:
+        row = {**result.serialize(), **result.neo.serialize()}
+        row["name"] = row["name"] if row["name"] is not None else ""
+        if row["name"] is not None:
+            row["name"] = row["name"]
+        else:
+            row["name"] = ""
+        
+        if row["potentially_hazardous"]:
+            row["potentially_hazardous"] = True
+        else:
+            row["potentially_hazardous"] = False
+
+        data.append(
+            {
+                "datetime_utc": row["datetime_utc"],
+                "distance_au": row["distance_au"],
+                "velocity_km_s": row["velocity_km_s"],
+                "neo": {
+                    "designation": row["designation"],
+                    "name": row["name"],
+                    "diameter_km": row["diameter_km"],
+                    "potentially_hazardous": row["potentially_hazardous"],
+                },
+            }
+        )
+
+    with open(filename, "w") as jsonFile:
+        json.dump(data, jsonFile)
