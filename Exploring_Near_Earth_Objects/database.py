@@ -13,6 +13,7 @@ You'll edit this file in Tasks 2 and 3.
 """
 from models import NearEarthObject
 
+
 class NEODatabase:
     """A database of near-Earth objects and their close approaches.
 
@@ -42,10 +43,10 @@ class NEODatabase:
         self._neos = neos
         self._approaches = approaches
 
-        # TODO: What additional auxiliary data structures will be useful?
+        # : What additional auxiliary data structures will be useful?
         self._neo_by_name = {}
         self._neo_by_pdes = {}
-        # TODO: Link together the NEOs and their close approaches.
+        # : Link together the NEOs and their close approaches.
         for neo in self._neos:
             self._neo_by_pdes[neo.designation] = neo
             if neo.name:
@@ -69,9 +70,9 @@ class NEODatabase:
         :param designation: The primary designation of the NEO to search for.
         :return: The `NearEarthObject` with the desired primary designation, or `None`.
         """
-        # TODO: Fetch an NEO by its primary designation.
+        # : Fetch an NEO by its primary designation.
         if designation in self._neo_by_pdes.keys():
-            return  self._neo_by_pdes[designation]
+            return self._neo_by_pdes[designation]
         else:
             return None
 
@@ -89,7 +90,7 @@ class NEODatabase:
         :param name: The name, as a string, of the NEO to search for.
         :return: The `NearEarthObject` with the desired name, or `None`.
         """
-        # TODO: Fetch an NEO by its name.
+        # : Fetch an NEO by its name.
         if name in self._neo_by_name.keys():
             return self._neo_by_name[name]
         else:
@@ -109,7 +110,7 @@ class NEODatabase:
         :param filters: A collection of filters capturing user-specified criteria.
         :return: A stream of matching `CloseApproach` objects.
         """
-        # TODO: Generate `CloseApproach` objects that match all of the filters.
+        # : Generate `CloseApproach` objects that match all of the filters.
         if filters:
             for approach in self._approaches:
                 if all(map(lambda f: f(approach), filters)):

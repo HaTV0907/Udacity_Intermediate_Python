@@ -35,13 +35,13 @@ def write_to_csv(results, filename):
                 row["name"] = row["name"]
             else:
                 row["name"] = ""
-            
             if row["potentially_hazardous"]:
                 row["potentially_hazardous"] = "True"
             else:
                 row["potentially_hazardous"] = "False"
 
             writer.writerow(row)
+
 
 def write_to_json(results, filename):
     """Write an iterable of `CloseApproach` objects to a JSON file.
@@ -54,7 +54,7 @@ def write_to_json(results, filename):
     :param results: An iterable of `CloseApproach` objects.
     :param filename: A Path-like object pointing to where the data should be saved.
     """
-    # TODO: Write the results to a JSON file, following the specification in the instructions.
+    # : Write the results to a JSON file, following the specification in the instructions.
     data = list()
     for result in results:
         row = {**result.serialize(), **result.neo.serialize()}
@@ -63,7 +63,7 @@ def write_to_json(results, filename):
             row["name"] = row["name"]
         else:
             row["name"] = ""
-        
+
         if row["potentially_hazardous"]:
             row["potentially_hazardous"] = True
         else:

@@ -77,24 +77,30 @@ class DateFilter(AttributeFilter):
     def get(cls, approach):
         return approach.time.date()
 
+
 class DistanceFilter(AttributeFilter):
     @classmethod
     def get(cls, approach):
         return approach.distance
-    
+
+
 class VelocityFilter(AttributeFilter):
     @classmethod
     def get(cls, approach):
         return approach.velocity
 
+
 class DiameterFilter(AttributeFilter):
     @classmethod
     def get(cls, approach):
         return approach.neo.diameter
+
+
 class HazadousFilter(AttributeFilter):
     @classmethod
     def get(cls, approach):
         return approach.neo.hazardous
+
 
 def create_filters(
         date=None, start_date=None, end_date=None,
@@ -132,7 +138,7 @@ def create_filters(
     :param hazardous: Whether the NEO of a matching `CloseApproach` is potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-    # TODO: Decide how you will represent your filters.
+    # : Decide how you will represent your filters.
     # create a set of filter to append all filter
     filter = []
     # create filter for date
@@ -157,7 +163,7 @@ def create_filters(
         f = VelocityFilter(operator.ge, velocity_min)
         filter.append(f)
     if velocity_max:
-        f = VelocityFilter(operator.le , velocity_max)
+        f = VelocityFilter(operator.le, velocity_max)
         filter.append(f)
     # create filter for diameter
     if diameter_min:
@@ -170,9 +176,8 @@ def create_filters(
     if hazardous is not None:
         f = HazadousFilter(operator.eq, hazardous)
         filter.append(f)
-    
-    return filter
 
+    return filter
 
 
 def limit(iterator, n=None):
@@ -184,7 +189,7 @@ def limit(iterator, n=None):
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
     """
-    # TODO: Produce at most `n` values from the given iterator.
+    # : Produce at most `n` values from the given iterator.
     if n is None or 0 == n:
         return iterator
-    return [data for num, data in enumerate(iterator) if num<n]
+    return [data for num, data in enumerate(iterator) if num < n]
