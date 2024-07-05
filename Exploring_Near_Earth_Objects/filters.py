@@ -38,6 +38,7 @@ class AttributeFilter:
     Concrete subclasses can override the `get` classmethod to provide custom
     behavior to fetch a desired attribute from the given `CloseApproach`.
     """
+
     def __init__(self, op, value):
         """Construct a new `AttributeFilter` from an binary predicate and a reference value.
 
@@ -69,36 +70,52 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """Magic method."""
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
 
 class DateFilter(AttributeFilter):
+    """Date filter."""
+    
     @classmethod
     def get(cls, approach):
+        """Getter."""
         return approach.time.date()
 
 
 class DistanceFilter(AttributeFilter):
+    """Filter."""
+
     @classmethod
     def get(cls, approach):
+        """Getter."""
         return approach.distance
 
 
 class VelocityFilter(AttributeFilter):
+    """Filter."""
+
     @classmethod
     def get(cls, approach):
+        """Getter."""
         return approach.velocity
 
 
 class DiameterFilter(AttributeFilter):
+    """Filter."""
+
     @classmethod
     def get(cls, approach):
+        """Getter."""
         return approach.neo.diameter
 
 
 class HazadousFilter(AttributeFilter):
+    """Filter."""
+
     @classmethod
     def get(cls, approach):
+        """Getter."""
         return approach.neo.hazardous
 
 

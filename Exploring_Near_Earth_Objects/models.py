@@ -17,6 +17,7 @@ quirks of the data set, such as missing names and unknown diameters.
 
 You'll edit this file in Task 1.
 """
+
 from helpers import cd_to_datetime, datetime_to_str
 
 
@@ -32,6 +33,7 @@ class NearEarthObject:
     initialized to an empty collection, but eventually populated in the
     `NEODatabase` constructor.
     """
+
     # : How can you, and should you, change the arguments to this constructor?
     # If you make changes, be sure to update the comments in this file.
     def __init__(self, pdes, name, diameter, hazadous):
@@ -75,6 +77,7 @@ class NearEarthObject:
                f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
 
     def serialize(self):
+        """Constuct dict for writing to json file."""
         return {
             'name': self.name,
             'diameter_km': self.diameter,
@@ -95,6 +98,7 @@ class CloseApproach:
     private attribute, but the referenced NEO is eventually replaced in the
     `NEODatabase` constructor.
     """
+
     # : How can you, and should you, change the arguments to this constructor?
     # If you make changes, be sure to update the comments in this file.
     def __init__(self, designation, time, distance, velocity):
@@ -147,6 +151,7 @@ class CloseApproach:
                f"velocity={self.velocity:.2f}, neo={self.neo!r})"
 
     def serialize(self):
+        """Constuct dict for writing to json file."""
         # Assuming self.time is a datetime object
         time_str = self.time.strftime('%Y-%m-%d %H:%M')
         return {
