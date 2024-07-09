@@ -1,0 +1,23 @@
+# Tesed on Ubuntu
+    $ uname -a
+    Linux katana 6.5.0-41-generic #41~22.04.2-Ubuntu SMP PREEMPT_DYNAMIC Mon Jun  3 11:32:55 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+# Clone source code
+    $ git clone https://github.com/HaTV0907/Udacity_Intermediate_Python.git
+# Create virtual environment
+    $ cd meme_generator
+    # create virtual env
+    $ python3 -m venv .venv
+    # activate virtual env
+    $ . .venv/bin/activate
+# Install Xpdf
+    # to read pdf file
+    $ sudo apt-get install -y xpdf
+# Install python-docx
+    # to read docx file
+    $ pip3 install python-docx
+# Install Flask
+    $ pip3 install Flask
+# Install Requests
+    $ pip3 install requests
+# Install Pillow
+    $ pip3 install pillow
