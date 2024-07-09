@@ -4,7 +4,7 @@
 # Clone source code
     $ git clone https://github.com/HaTV0907/Udacity_Intermediate_Python.git
 # Create virtual environment
-    $ cd meme_generator
+    $ cd Meme_Generator
     # create virtual env
     $ python3 -m venv .venv
     # activate virtual env
