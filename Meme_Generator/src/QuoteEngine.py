@@ -3,6 +3,7 @@ from typing import List
 import csv
 import docx
 import subprocess
+import os
 
 class QuoteModel:
     """Quote Model that represents the qoute"""
@@ -64,17 +65,38 @@ class PdfIngestor(IngestorInterface):
     """Method to parse the pdf file"""
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
-        quotes = list()
-        output = subprocess.run(['pdftotext', path, '-'], capture_output=True, text=True)
-        extracted_text = output.stdout
-        print(extracted_text)
-        # extract quoute and author in to quotemodel object
-        for line in extracted_text:
-            if len(line) > 0:
-                body, author = line.split(' - ')
-                quotes.append(QuoteModel(body, author))
-        return quotes
+        # Ensure the tmp directory exists
+        tmp_dir = './tmp'
+        os.makedirs(tmp_dir, exist_ok=True)
 
+        tmp = f'{tmp_dir}/{os.path.basename(path)}.txt'
+        try:
+            # Convert PDF to text using pdftotext
+            subprocess.run(['pdftotext', path, tmp], check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Error converting PDF to text: {e}")
+            return []
+
+        quotes = []
+        try:
+            with open(tmp, 'r') as file:
+                for line in file.readlines():
+                    line = line.strip('\n\r').strip()
+                    if len(line) > 0:
+                        try:
+                            body, author = line.split(' - ')
+                            new_quote = QuoteModel(body, author)
+                            quotes.append(new_quote)
+                        except ValueError:
+                            print(f"Error loading file {path}: not enough values to unpack (expected 2, got 1)")
+        except FileNotFoundError as e:
+            print(f"Error loading file {path}: {e}")
+        finally:
+            # Clean up the temporary file
+            if os.path.exists(tmp):
+                os.remove(tmp)
+
+        return quotes
 
 class CsvIngestor(IngestorInterface):
     """Ingestor for CSV file"""
@@ -111,17 +133,18 @@ class DocxIngestor(IngestorInterface):
     """Method to parse the text file"""
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
-        quotes = list()
+        quotes = []
         doc = docx.Document(path)
-        paragraphs_text = ""
-        # read docx file content in variable
-        for paragraph in doc.paragraphs:
-            paragraphs_text += paragraph.text + "\n"
-        # extract quoute and author in to quotemodel object
-        for line in paragraphs_text:
-            if len(line) > 0:
-                body, author = line.split(' - ')
-                quotes.append(QuoteModel(body, author))
+
+        for para in doc.paragraphs:
+            if para.text != "":
+                try:
+                    body, author = para.text.split(' - ')
+                    new_quote = QuoteModel(body, author)
+                    quotes.append(new_quote)
+                except ValueError:
+                    print(f"Error loading file {path}: not enough values to unpack (expected 2, got 1)")
+
         return quotes
 
 

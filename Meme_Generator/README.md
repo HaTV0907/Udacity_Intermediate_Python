@@ -16,10 +16,10 @@
     $ sudo apt-get install -y xpdf
 # Install python-docx
     # to read docx file
-    $ pip3 install python-docx
+    $ pip install python-docx
 # Install Flask
-    $ pip3 install Flask
+    $ pip install Flask
 # Install Requests
-    $ pip3 install requests
+    $ pip install requests
 # Install Pillow
-    $ pip3 install pillow
+    $ pip install pillow
