@@ -12,6 +12,9 @@ class QuoteModel:
         self.body = body
         self.author = author
 
+    """Override __str__ for dubugging"""
+    def __str__(self):
+        return f'Quote body: {self.body}, quote author: {self.author}"'
 
 class IngestorInterface(ABC):
     """Base class for Ingestor"""

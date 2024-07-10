@@ -13,6 +13,19 @@ class MemeEngine:
     def __init__(self, output_dir):
         self.output_dir = output_dir
 
+    def draw_text(self, draw, text, position, font, max_width):
+        lines = []
+        words = text.split()
+        while words:
+            line = ''
+            while words and draw.textbbox((0, 0), line + words[0], font=font)[2] <= max_width:
+                line = line + (words.pop(0) + ' ')
+            lines.append(line)
+        y = position[1]
+        for line in lines:
+            draw.text((position[0], y), line, font=font, fill="white")
+            y += font.getbbox(line)[3] - font.getbbox(line)[1]
+
     """Create meme form picture and quote
 
     :param[in]: img_path: path to imnage
@@ -42,11 +55,8 @@ class MemeEngine:
 
         message = f'"{body}" - {author}'
 
-        # Calculate text size and position
-        text_position = (random.randint(0, width - 100), random.randint(0, new_height - 50))
-
         # Add text to image
-        draw.text(text_position, message, font=font, fill='white')
+        self.draw_text(draw, message, (10, 10), font, width)
 
         # Ensure the output directory exists
         if not os.path.exists(self.output_dir):
