@@ -39,7 +39,11 @@ def generate_meme(path=None, body=None, author=None):
     path = meme.make_meme(img, quote.body, quote.author)
     return path
 
-def main():
+if __name__ == "__main__":
+    #  Use ArgumentParser to parse the following CLI arguments
+    # path - path to an image file
+    # body - quote body to add to the image
+    # author - quote author to add to the image
     parser = argparse.ArgumentParser(description="Generate a meme with a quote.")
     parser.add_argument('--path', type=str, help='Path to the image file')
     parser.add_argument('--body', type=str, help='Quote body text')
@@ -55,12 +59,3 @@ def main():
         # If any argument is not defined, use a random selection
         print(f"Check the params")
 
-    print(f"Meme saved at: {output_path}")
-
-if __name__ == "__main__":
-    #  Use ArgumentParser to parse the following CLI arguments
-    # path - path to an image file
-    # body - quote body to add to the image
-    # author - quote author to add to the image
-    args = None
-    print(generate_meme(args.path, args.body, args.author))
