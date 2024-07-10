@@ -41,7 +41,7 @@ class MemeEngine:
         except ValueError as err:
             print(f"Error generating meme: {err}")
         font_size = 20
-        font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+        font_path = "../font/dejavu/DejaVuSans-Bold.ttf"
         # resize image
         aspect_ratio = img.height / img.width
         new_height = int(aspect_ratio * width)
